@@ -10,14 +10,15 @@
         </div>
         <!-- 侧边导航栏 -->
         <el-menu
+          router
           collapse-transition
-          default-active="1"
+          default-active="/home"
           :collapse="isCollapse">
-          <el-menu-item index="1">
+          <el-menu-item index="/home">
             <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="/custome">
             <i class="el-icon-user"></i>
             <span slot="title">客户管理</span>
           </el-menu-item>
@@ -64,9 +65,8 @@
       <el-container>
         <el-header>
           <div class="header">
-            <!-- el-icon-s-unfold -->
             <i :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'" @click="handleToggle" />
-            <div class="user-wrap"></div>
+            <div class="user-wrap" @click="handleToProfile">个人中心</div>
           </div>
         </el-header>
         <el-main>
@@ -92,11 +92,9 @@ export default {
     handleToggle () {
       this.isCollapse = !this.isCollapse
     },
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
+    // 去往个人中心
+    handleToProfile () {
+      this.$router.push('/profile')
     }
   }
 }
@@ -139,32 +137,18 @@ export default {
           background-color: #409eff;
           color: #fff;
           .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             line-height: 60px;
             i {
               font-size: 24px;
               vertical-align: middle;
-              // font-size: 24px;
               font-weight: normal;
             }
           }
         }
       }
-      // .el-header {
-      //   .head-container {
-      //     display: flex;
-      //     justify-content: space-between;
-      //     height: 100%;
-      //     .user-info {}
-      //   }
-      // }
-      // .el-container {
-      //   height: 100%;
-      //   .el-aside {
-      //     .el-menu {
-      //       height: 100%;
-      //     }
-      //   }
-      // }
     }
   }
 </style>

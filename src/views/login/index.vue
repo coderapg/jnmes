@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { JNMES_TOKEN } from 'utils/jsmesconst'
+import { JNMES_TOKEN, JNMES_DEPARTS, JNMES_USER_INFO } from 'utils/jsmesconst'
 
 import { getVerificationCode, signIn } from 'https/login'
 
@@ -100,7 +100,7 @@ export default {
         signIn(form).then(res => {
           this.loginLoading = false
           const { data: { code, message, result: { departs, multi_depart: multiDepart, sysAllDictItems, tenantList, token, userInfo }, success } } = res
-          console.log('登录的相关信息===', departs, multiDepart, sysAllDictItems, tenantList, userInfo)
+          console.log('登录的相关信息===', multiDepart, sysAllDictItems, tenantList)
           if (code === 200 && success) {
             this.$notify.success({
               title: '提示',
@@ -108,9 +108,11 @@ export default {
               message
             })
             // 存储到本地
-            window.localStorage.setItem(JNMES_TOKEN, JSON.stringify(token))
+            window.localStorage.setItem(JNMES_TOKEN, JSON.stringify(token)) // touken信息
+            window.localStorage.setItem(JNMES_DEPARTS, JSON.stringify(departs)) // 所属部门信息
+            window.localStorage.setItem(JNMES_USER_INFO, JSON.stringify(userInfo)) // 登录人信息
             // 跳转
-            this.$router.push('/')
+            this.$router.push('/home')
           } else {
             this.$notify.error({
               title: '提示',
