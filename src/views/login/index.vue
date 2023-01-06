@@ -1,22 +1,22 @@
 <template>
   <div class="login-container">
-    <el-form ref="form" :model="user" class="user">
+    <el-form ref="userForm" :model="user" :rules="rules" class="user">
       <el-form-item>
         <div class="logo"></div>
       </el-form-item>
-      <el-form-item>
-        <el-input v-model="user.username"></el-input>
+      <el-form-item prop="username">
+        <el-input placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="user.username" /><!-- el-icon-s-custom -->
       </el-form-item>
-      <el-form-item>
-        <el-input v-model="user.password"></el-input>
+      <el-form-item prop="password">
+        <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" show-password v-model="user.password" />
       </el-form-item>
-      <el-form-item>
-        <el-input v-model="user.inputCode"></el-input>
+      <el-form-item prop="inputCode">
+        <el-input placeholder="请输入验证码" prefix-icon="el-icon-refresh" v-model="user.inputCode" />
         <img v-if="showRandCode" :src="randCode" alt="" @click="loadVerificationCode" />
         <img v-else src="./checkcode.png" @click="loadVerificationCode" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+        <el-button type="primary" :loading="loginLoading" @click="handleLogin">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -34,9 +34,21 @@ export default {
         password: '',
         inputCode: ''
       },
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        inputCode: [
+          { required: true, message: '请输入验证码', trigger: 'blur' }
+        ]
+      },
       timeStamp: '', // 获取当前的时间戳，用于获取最新验证码和登录时验证返回的code
       randCode: null, // 后台返回的验证码图片
-      showRandCode: true // 判断404图片是否显示
+      showRandCode: true, // 判断404图片是否显示
+      loginLoading: false // 提交时添加loading效果
     }
   },
   created () {
@@ -49,7 +61,6 @@ export default {
       this.user.inputCode = '' // 每次刷新 / 点击时，需要置空验证码
       getVerificationCode(this.timeStamp).then(res => {
         const { data: { message, result, success }, status } = res
-        console.log('err', res)
         if (status === 200 && success) {
           this.randCode = result
           this.showRandCode = true
@@ -61,8 +72,15 @@ export default {
         this.showRandCode = false
       })
     },
-    onSubmit () {
-      console.log('submit!')
+    handleLogin () {
+      this.$refs.userForm.validate(valid => {
+        if (!valid) {
+          console.log('submit!')
+          return false
+        }
+        this.loginLoading = true
+        // 发送请求
+      })
     }
   }
 }
