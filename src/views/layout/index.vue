@@ -2,7 +2,7 @@
   <div class="layout-container">
     <!-- Container 布局容器 -->
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="auto">
         <div class="logo">
           <a href="#">
             <img src="http://sms.jnmes.com/img/logo.bec6bef1.svg" alt="">
@@ -10,6 +10,7 @@
         </div>
         <!-- 侧边导航栏 -->
         <el-menu
+          collapse-transition
           default-active="1"
           :collapse="isCollapse">
           <el-menu-item index="1">
@@ -64,7 +65,7 @@
         <el-header>
           <div class="header">
             <!-- el-icon-s-unfold -->
-            <i class="el-icon-s-fold" />
+            <i :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'" @click="handleToggle" />
             <div class="user-wrap"></div>
           </div>
         </el-header>
@@ -87,6 +88,10 @@ export default {
     }
   },
   methods: {
+    // 切换展开 / 隐藏
+    handleToggle () {
+      this.isCollapse = !this.isCollapse
+    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
@@ -120,6 +125,12 @@ export default {
             img {
               height: 40px;
             }
+          }
+        }
+        .el-menu {
+          height: calc(100% - 60px);
+          .el-menu-item {
+            width: 200px;
           }
         }
       }
