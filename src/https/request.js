@@ -4,7 +4,8 @@ import axios from 'axios'
 export function request (config) {
   // 配置公共信息
   const instance = axios.create({
-    baseURL: 'http://192.168.124.14:8080/sales-management-system',
+    baseURL: 'https://www.jnsms.cn',
+    // baseURL: 'http://192.168.124.14:8080',
     timeout: 5000
   })
 

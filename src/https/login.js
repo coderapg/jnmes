@@ -7,6 +7,15 @@ import { request } from './request'
 export function getVerificationCode (timeStamp) {
   return request({
     method: 'GET',
-    url: `/sys/randomImage/${timeStamp}`
+    url: `/sales-management-system/sys/randomImage/${timeStamp}`
+  })
+}
+
+// 登录
+export function signIn (config) {
+  return request({
+    method: 'POST',
+    url: '/sales-management-system/sys/login',
+    data: config
   })
 }
