@@ -2,15 +2,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // 路由懒加载
-const Login = () => import('../views/login/index')
+const Login = () => import('../views/login/')
+const Layout = () => import('../views/layout/')
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '',
+    path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/',
+    name: 'layout',
+    component: Layout
   }
 ]
 

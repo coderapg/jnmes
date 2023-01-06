@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { JNMES_TOKEN } from 'utils/jsmesconst'
+
 import { getVerificationCode, signIn } from 'https/login'
 
 export default {
@@ -90,7 +92,6 @@ export default {
     handleLogin () {
       this.$refs.userForm.validate(valid => {
         if (!valid) {
-          console.log('submit!')
           return false
         }
         this.loginLoading = true
@@ -98,9 +99,25 @@ export default {
         const form = Object.assign({}, this.user, { checkKey: this.timeStamp })
         signIn(form).then(res => {
           this.loginLoading = false
-          const { data: { code, message, result, success } } = res
-          console.log('res===', code, message, result, success)
-          if (code === 200 && success) {}
+          const { data: { code, message, result: { departs, multi_depart: multiDepart, sysAllDictItems, tenantList, token, userInfo }, success } } = res
+          console.log('登录的相关信息===', departs, multiDepart, sysAllDictItems, tenantList, userInfo)
+          if (code === 200 && success) {
+            this.$notify.success({
+              title: '提示',
+              duration: 2000,
+              message
+            })
+            // 存储到本地
+            window.localStorage.setItem(JNMES_TOKEN, JSON.stringify(token))
+            // 跳转
+            this.$router.push('/')
+          } else {
+            this.$notify.error({
+              title: '提示',
+              duration: 2000,
+              message
+            })
+          }
         })
       })
     }
@@ -115,6 +132,7 @@ export default {
     min-height: 100vh;
     background: url('./background.svg') no-repeat center center;
     background-size: 100%;
+    background-color: #f0f0f0;
     .login {
       display: flex;
       position: absolute;
@@ -123,8 +141,9 @@ export default {
       transform: translate(-50%, -50%);
       width: 800px;
       background-color: #fff;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.2);
       border-radius: 10px;
+      overflow: hidden;
       .el-col {
         .user {
           padding: 20px;
