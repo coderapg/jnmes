@@ -5,7 +5,7 @@
         <el-form ref="userForm" :model="user" :rules="rules" class="user">
           <el-form-item class="logo-title">
             <div class="logo">
-              <img src="./logo.png" alt="">
+              <img src="../../assets/images/logo.png" alt="">
             </div>
             <div class="title">{{ titleName }}</div>
           </el-form-item>
