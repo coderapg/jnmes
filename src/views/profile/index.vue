@@ -80,9 +80,31 @@
             </el-form-item>
           </el-form>
         </el-col>
-        <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">2</el-col>
+        <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" class="avatar-wrap">
+          <label for="file">
+            <!-- <img src="" alt=""> -->
+            <!-- <el-avatar shape="square" :size="100" fit="cover" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c2594117123jpeg.jpeg"></el-avatar> -->
+            <el-image
+              style="width: 200px; height: 200px"
+              src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c2594117123jpeg.jpeg"
+              fit="cover"></el-image>
+              <p>修改头像</p>
+            <input ref="file" type="file" id="file" hidden @change="handleAvatarChange">
+          </label>
+        </el-col>
       </el-row>
     </el-card>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      append-to-body
+      width="30%">
+      <img :src="proviewImg" alt="">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -144,6 +166,8 @@ export default {
         value: '选项5',
         label: '北京烤鸭'
       }],
+      dialogVisible: false, // 是否显示弹出层
+      proviewImg: '', // 弹出层预览的图片
       value1: [],
       value2: []
     }
@@ -160,7 +184,11 @@ export default {
       this.user = Object.assign({}, { birthday, email, id, phone, post, realname, sex, status, userIdentity })
       this.user.orgList = departs.map(item => { return { value: item.id, label: item.departName } })
       this.user.org = this.user.orgList.map(item => item.value)
-      console.log('加载完成', departs, userInfo, this.options)
+      // console.log('加载完成', departs, userInfo)
+    },
+    // 弹出弹出层
+    handleAvatarChange () {
+      this.dialogVisible = true
     },
     onSubmit () {
       console.log('submit!')
@@ -169,4 +197,15 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .avatar-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p {
+      text-align: center;
+      font-size: 20px;
+      color: #333;
+    }
+  }
+</style>

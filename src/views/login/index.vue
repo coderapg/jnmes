@@ -43,8 +43,8 @@ export default {
   data () {
     return {
       user: {
-        username: '',
-        password: '',
+        username: 'jn04',
+        password: 'Jnzn12345!',
         captcha: ''
       },
       rules: {
