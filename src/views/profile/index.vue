@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { JNMES_DEPARTS, JNMES_USER_INFO } from 'utils/jsmesconst'
+import { userInfoAndDepartsMixin } from 'utils/mixin'
 
 import { updateAlbum } from 'https/user'
 
@@ -119,6 +119,7 @@ import Cropper from 'cropperjs'
 
 export default {
   name: 'ProfileIndex',
+  mixins: [userInfoAndDepartsMixin],
   data () {
     return {
       user: {
@@ -167,12 +168,10 @@ export default {
   methods: {
     // 加载登录人相关信息
     loadRelatedInfo () {
-      const departs = JSON.parse(window.localStorage.getItem(JNMES_DEPARTS))
-      const userInfo = JSON.parse(window.localStorage.getItem(JNMES_USER_INFO))
-      const { birthday, email, id, phone, post, realname, sex, status, userIdentity } = userInfo
+      const { birthday, email, id, phone, post, realname, sex, status, userIdentity } = this.userInfo
       const userPost = post.indexOf('admin') !== -1 && userIdentity === 2 ? '管理员' : post.indexOf('admin') === -1 && userIdentity === 2 ? '销售主管' : '业务员'
       this.user = Object.assign({}, { birthday, email, id, phone, post: userPost, realname, sex, status, userIdentity })
-      this.user.orgList = departs.map(item => { return { value: item.id, label: item.departName } })
+      this.user.orgList = this.departs.map(item => { return { value: item.id, label: item.departName } })
       this.user.org = this.user.orgList.map(item => item.value)
     },
     // 弹出弹出层

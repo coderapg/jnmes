@@ -17,8 +17,8 @@
           default-active="/home"
           :collapse="isCollapse">
           <el-menu-item index="/home">
-            <i class="el-icon-pie-chart"></i>
-            <span slot="title">数据中心</span>
+            <i class="el-icon-s-home"></i>
+            <span slot="title">首页</span>
           </el-menu-item>
           <el-menu-item index="/custome">
             <i class="el-icon-user"></i>

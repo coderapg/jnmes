@@ -21,12 +21,6 @@
         <div class="statistic-content">
         </div>
       </el-card>
-      <!-- <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>总销售额</span>
-        </div>
-        <p class="title">总销售额</p>
-      </el-card> -->
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span>总销售额</span>
