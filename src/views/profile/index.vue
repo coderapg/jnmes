@@ -82,12 +82,9 @@
         </el-col>
         <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" class="avatar-wrap">
           <label for="file">
-            <!-- <img src="" alt=""> -->
-            <!-- <el-avatar shape="square" :size="100" fit="cover" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c2594117123jpeg.jpeg"></el-avatar> -->
-            <el-image
+            <img
               style="width: 200px; height: 200px"
-              src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c2594117123jpeg.jpeg"
-              fit="cover"></el-image>
+              src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c2594117123jpeg.jpeg" />
               <p>修改头像</p>
             <input ref="file" type="file" id="file" hidden @change="handleAvatarChange">
           </label>
@@ -98,11 +95,14 @@
       title="提示"
       :visible.sync="dialogVisible"
       append-to-body
-      width="30%">
-      <img :src="proviewImg" alt="">
+      width="30%"
+      @opened="handleDialogOpened">
+      <div class="preview-wrap">
+        <img ref="proviewImg" :src="proviewImg" alt="">
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleUploadPhoto">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -110,6 +110,12 @@
 
 <script>
 import { JNMES_DEPARTS, JNMES_USER_INFO } from 'utils/jsmesconst'
+
+import { updateAlbum } from 'https/user'
+
+// 引入cropper
+import 'cropperjs/dist/cropper.css'
+import Cropper from 'cropperjs'
 
 export default {
   name: 'ProfileIndex',
@@ -150,26 +156,9 @@ export default {
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ]
       },
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
       dialogVisible: false, // 是否显示弹出层
       proviewImg: '', // 弹出层预览的图片
-      value1: [],
-      value2: []
+      cropper: null // cropper裁切器
     }
   },
   created () {
@@ -181,14 +170,40 @@ export default {
       const departs = JSON.parse(window.localStorage.getItem(JNMES_DEPARTS))
       const userInfo = JSON.parse(window.localStorage.getItem(JNMES_USER_INFO))
       const { birthday, email, id, phone, post, realname, sex, status, userIdentity } = userInfo
-      this.user = Object.assign({}, { birthday, email, id, phone, post, realname, sex, status, userIdentity })
+      const userPost = post.indexOf('admin') !== -1 && userIdentity === 2 ? '管理员' : post.indexOf('admin') === -1 && userIdentity === 2 ? '销售主管' : '业务员'
+      this.user = Object.assign({}, { birthday, email, id, phone, post: userPost, realname, sex, status, userIdentity })
       this.user.orgList = departs.map(item => { return { value: item.id, label: item.departName } })
       this.user.org = this.user.orgList.map(item => item.value)
-      // console.log('加载完成', departs, userInfo)
     },
     // 弹出弹出层
     handleAvatarChange () {
       this.dialogVisible = true
+      const file = this.$refs.file.files[0]
+      const blob = window.URL.createObjectURL(file)
+      this.proviewImg = blob
+
+      // 处理选择同一张图片时，file不触发change事件的bug
+      this.$refs.file.value = ''
+    },
+    // dialog对话框完全打开时
+    handleDialogOpened () {
+      // 加载cropper
+      const image = this.$refs.proviewImg
+      this.cropper = new Cropper(image, { // 初始化裁切器
+        aspectRatio: 1, // 定义裁剪框的固定纵横比 1 : 1
+        cropBoxResizable: false, // 不允许改变裁切框的大小
+        movable: true,
+        dragMode: 'none', // 不允许裁切器自动变化 / 不允许移动图片
+        viewMode: 1 //  限制裁剪框不超过画布的大小
+      })
+    },
+    // 裁切并上传图片
+    handleUploadPhoto () {
+      const fd = new FormData()
+      fd.append('file', fd)
+      updateAlbum(fd).then(res => {
+        console.log('上传成功看了', res)
+      })
     },
     onSubmit () {
       console.log('submit!')
@@ -206,6 +221,16 @@ export default {
       text-align: center;
       font-size: 20px;
       color: #333;
+    }
+  }
+  // 弹出层
+  .el-dialog__wrapper {
+    .preview-wrap {
+      img {
+        display: block;
+        max-width: 100%;
+        height: 200px;
+      }
     }
   }
 </style>
