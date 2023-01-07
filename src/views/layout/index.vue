@@ -166,6 +166,9 @@ export default {
             }
           }
         }
+        // .el-main {
+        //   padding: 20px 25px;
+        // }
       }
     }
   }
