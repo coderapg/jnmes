@@ -11,12 +11,14 @@
         <!-- 侧边导航栏 -->
         <el-menu
           router
+          text-color="#8e99f6"
+          active-text-color="#fff"
           collapse-transition
           default-active="/home"
           :collapse="isCollapse">
           <el-menu-item index="/home">
-            <i class="el-icon-s-home"></i>
-            <span slot="title">首页</span>
+            <i class="el-icon-pie-chart"></i>
+            <span slot="title">数据中心</span>
           </el-menu-item>
           <el-menu-item index="/custome">
             <i class="el-icon-user"></i>
@@ -110,10 +112,12 @@ export default {
     .el-container {
       width: 100%;
       height: 100%;
+      background-color: #f4f4f4;
       .el-aside {
+        background-color: #3a3b6a;
         .logo {
           width: 100%;
-          background-color: #409eff;
+          background-color: #3a3b6a;
           a {
             display: block;
             height: 60px;
@@ -127,15 +131,29 @@ export default {
         }
         .el-menu {
           height: calc(100% - 60px);
+          background-color: #3a3b6a;
           .el-menu-item {
             width: 200px;
+            i {
+              color: #8e99f6;
+            }
+          }
+          .el-menu-item:hover {
+            background-color: transparent;
+          }
+          .is-active {
+            background-color: transparent;
+            i {
+              color: #fff;
+            }
           }
         }
       }
       .el-container {
         .el-header {
-          background-color: #409eff;
-          color: #fff;
+          background-color: #fff;
+          color: #333;
+          box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
           .header {
             display: flex;
             justify-content: space-between;
