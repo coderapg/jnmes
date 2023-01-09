@@ -59,27 +59,7 @@
       :cell-style="{'text-align':'center'}"
       style="width: 100%">
       <el-table-column type="expand">
-        <!--  slot-scope="props" -->
         <template slot-scope="props">
-          <!-- <el-form-item label="所属店铺">
-              <span>{{ props.row.shop }}</span>
-            </el-form-item>
-            <el-form-item label="商品 ID">
-              <span>{{ props.row.id }}</span>
-            </el-form-item>
-            <el-form-item label="店铺 ID">
-              <span>{{ props.row.shopId }}</span>
-            </el-form-item>
-            <el-form-item label="商品分类">
-              <span>{{ props.row.category }}</span>
-            </el-form-item>
-            <el-form-item label="店铺地址">
-              <span>{{ props.row.address }}</span>
-            </el-form-item>
-            <el-form-item label="商品描述">
-              <span>{{ props.row.desc }}</span>
-            </el-form-item>
-          </el-form> -->
           <el-table
             :data="props.row.orderVoList"
             :header-cell-style="{'text-align':'center'}"
@@ -108,8 +88,6 @@
             </el-table-column>
             <el-table-column prop="address" label="协助人员">
             </el-table-column>
-            <!-- <el-table-column label="操作">
-            </el-table-column> -->
             <el-table-column label="操作" width="110" class-name="operation">
               <template slot-scope="scope">
                 <span @click="handleEdit(scope.row)">编辑</span>

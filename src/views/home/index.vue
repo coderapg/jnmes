@@ -7,11 +7,12 @@
         </div>
         <div class="statistic-content">
           <em>¥</em>
-          <span>234567</span>
+          <span>{{ totalSales }}</span>
+          <!-- <el-statistic group-separator="," :precision="2" :value="totalSales" /> -->
         </div>
         <div class="footer">
           <span>单笔销售均额:</span>
-          <span><em>¥</em>313646</span>
+          <span><em>¥</em>{{ avgSales }}</span>
         </div>
       </el-card>
       <el-card class="box-card">
@@ -23,7 +24,7 @@
       </el-card>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span>总销售额</span>
+          <span>客户类型占比</span>
         </div>
         <p class="title">总销售额</p>
       </el-card>
@@ -38,9 +39,31 @@
 </template>
 
 <script>
+import { getTotalSales } from 'https/home'
 
 export default {
-  name: 'HomeIndex'
+  name: 'HomeIndex',
+  data () {
+    return {
+      totalSales: 0,
+      avgSales: 0
+    }
+  },
+  created () {
+    this.loadTotalSales()
+  },
+  methods: {
+    loadTotalSales () {
+      getTotalSales().then(res => {
+        console.log('===', res)
+        const { result: { avg, total }, success } = res.data
+        if (success) {
+          this.totalSales = total
+          this.avgSales = avg
+        }
+      })
+    }
+  }
 }
 </script>
 
