@@ -7,7 +7,7 @@ import { request } from './request'
 export function getVerificationCode (timeStamp) {
   return request({
     method: 'GET',
-    url: `/sales-management-system/sys/randomImage/${timeStamp}`
+    url: `/sys/randomImage/${timeStamp}`
   })
 }
 
@@ -15,7 +15,7 @@ export function getVerificationCode (timeStamp) {
 export function signIn (config) {
   return request({
     method: 'POST',
-    url: '/sales-management-system/sys/login',
+    url: '/sys/login',
     data: config
   })
 }

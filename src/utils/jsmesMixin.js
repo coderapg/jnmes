@@ -1,6 +1,7 @@
 /**
  * 公共混入方法
  */
+
 export const JnmesMixin = {
   data () {
     return {
@@ -8,8 +9,8 @@ export const JnmesMixin = {
     }
   },
   methods: {
+    // 收起 / 折叠
     handleToggleSearch () {
-      console.log('切换')
       this.toggleSearchStatus = !this.toggleSearchStatus
     }
   }

@@ -7,7 +7,7 @@ import { request } from './request'
 export function updateAlbum (data) {
   return request({
     method: 'POST',
-    url: '/sales-management-system/sys/common/upload',
+    url: '/sys/common/upload',
     data
   })
 }

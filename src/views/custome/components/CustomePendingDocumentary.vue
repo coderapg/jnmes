@@ -89,20 +89,28 @@
       </el-table-column>
     </el-table>
     <!-- /表格数据 -->
+    <!-- 分页 -->
+    <el-pagination
+      class="pagination"
+      background
+      layout="prev, pager, next"
+      :current-page.sync="page"
+      :page-size="pageSizes"
+      @current-change="handleCurrentChange"
+      :total="1000" />
+    <!-- /分页 -->
   </div>
 </template>
 
 <script>
 import { JnmesMixin } from 'utils/jsmesMixin'
+import { getData } from 'https/jsmesConfig'
 
 export default {
-  name: '',
+  name: 'CustomePendingDocumentary',
   data () {
     return {
-      queryParam: {
-        name: '',
-        value1: ''
-      },
+      queryParam: {},
       selectOptions: [
         {
           value: 1,
@@ -114,23 +122,34 @@ export default {
         }
       ],
       value: null,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      tableData: [
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        },
+        {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        },
+        {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        },
+        {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }
+      ],
+      url: {
+        list: '/customer/cusCustomer/list'
+      },
+      // 分页参数
+      page: 1,
+      pageSizes: 20
     }
   },
   mixins: [JnmesMixin],
@@ -141,7 +160,32 @@ export default {
       required: true
     }
   },
+  created () {
+    this.loadTableData(1)
+  },
   methods: {
+    // 初始化加载数据
+    loadTableData (page = 1) {
+      this.page = page
+      // console.log('给你一瓶魔法药水')
+      // const requestParams = {}
+      /**
+       * , {
+        type: this.currentType,
+        pageNo: this.page,
+        pageSize: this.pageSizes
+      }
+       */
+      // getData(this.url.list).then(res => {
+      getData('/customer/cusCustomer/list?type=3&pageNo=1&pageSize=10').then(res => {
+        console.log('给你一瓶魔法药水', res)
+      })
+    },
+    // 点击分页页码
+    handleCurrentChange () {
+      // console.log('分页页码', this.page, this.url.list)
+      this.loadTableData(this.page)
+    },
     onSubmit () {
       console.log('submit!')
     },

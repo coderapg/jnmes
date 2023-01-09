@@ -25,8 +25,8 @@ export default {
   mixins: [userInfoAndDepartsMixin],
   data () {
     return {
-      CustomerTypeEnum,
-      currentType: '2' // 当前选中的tabs的索引
+      CustomerTypeEnum
+      // currentType: '2' // 当前选中的tabs的索引
     }
   },
   components: {
@@ -35,8 +35,12 @@ export default {
   computed: {
     typeIndex () {
       const { post } = this.userInfo
-      const type = post.indexOf('admin') !== -1 ? CustomerTypeEnum.Pending.toString() : CustomerTypeEnum.Documentary.toString()
-      return type
+      return post.indexOf('admin') !== -1 ? CustomerTypeEnum.Pending.toString() : CustomerTypeEnum.Documentary.toString()
+    },
+    // 当前选中的tabs的索引
+    currentType () {
+      const { post } = this.userInfo
+      return post.indexOf('admin') !== -1 ? '2' : '3'
     }
   },
   methods: {}
