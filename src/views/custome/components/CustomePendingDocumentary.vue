@@ -212,6 +212,7 @@ export default {
     onSubmit () {
       console.log('submit!')
     },
+    // 编辑
     handleEdit (row) {
       console.log(row)
     },
@@ -229,22 +230,4 @@ export default {
 
 <style lang="less" scoped>
   .custome-pending-documentary {}
-  /deep/ .operation {
-    .cell {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-      span {
-        color: #409eff;
-        i {
-          font-size: 12px;
-        }
-      }
-      em {
-        font-size: 10px;
-        font-style: normal;
-        color: #eee;
-      }
-    }
-  }
 </style>
