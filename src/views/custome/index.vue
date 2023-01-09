@@ -3,10 +3,10 @@
     <el-card>
       <el-tabs class="custome-card" v-model="currentType">
         <el-tab-pane label="待分配" name="2" v-if="typeIndex === CustomerTypeEnum.Pending.toString()">
-          <custome-pending-documentary :current-type="CustomerTypeEnum.Pending" />
+          <custome-pending-documentary :cur-type="CustomerTypeEnum.Pending" />
         </el-tab-pane>
         <el-tab-pane label="跟单" name="3">
-          <custome-pending-documentary :current-type="CustomerTypeEnum.Documentary" />
+          <custome-pending-documentary :cur-type="CustomerTypeEnum.Documentary" />
         </el-tab-pane>
         <el-tab-pane label="成单" name="1">1</el-tab-pane>
       </el-tabs>
@@ -38,9 +38,14 @@ export default {
       return post.indexOf('admin') !== -1 ? CustomerTypeEnum.Pending.toString() : CustomerTypeEnum.Documentary.toString()
     },
     // 当前选中的tabs的索引
-    currentType () {
-      const { post } = this.userInfo
-      return post.indexOf('admin') !== -1 ? '2' : '3'
+    currentType: {
+      get () {
+        const { post } = this.userInfo
+        return post.indexOf('admin') !== -1 ? '2' : '3'
+      },
+      set () {
+        return ''
+      }
     }
   },
   methods: {}

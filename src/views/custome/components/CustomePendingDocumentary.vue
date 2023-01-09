@@ -60,21 +60,44 @@
       <el-table-column
         label="序号"
         type="index"
-        width="100">
+        width="80" />
+      <el-table-column
+        prop="companyName"
+        label="客户名称" />
+      <el-table-column
+        prop="createTime"
+        label="开始日期" />
+      <el-table-column
+        prop="endTime"
+        label="结束日期">
       </el-table-column>
       <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
+        prop="status"
+        label="客户状态">
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
+        prop="starLevel"
+        label="客户等级">
       </el-table-column>
+      <el-table-column
+        prop="orderName"
+        label="主要负责人">
+      </el-table-column>
+      <el-table-column
+        prop="helperNames"
+        label="协助人员">
+      </el-table-column>
+      <!-- <el-table-column
+        prop="helperIds"
+        label="协助人员">
+      </el-table-column> -->
       <el-table-column
         prop="address"
-        label="地址">
+        label="详细地址">
+      </el-table-column>
+      <el-table-column
+        prop="remark"
+        label="备注">
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -95,9 +118,9 @@
       background
       layout="prev, pager, next"
       :current-page.sync="page"
-      :page-size="pageSizes"
+      :page-size="pageSize"
       @current-change="handleCurrentChange"
-      :total="1000" />
+      :total="totalCount" />
     <!-- /分页 -->
   </div>
 </template>
@@ -122,39 +145,19 @@ export default {
         }
       ],
       value: null,
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        },
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }
-      ],
+      tableData: [],
       url: {
         list: '/customer/cusCustomer/list'
       },
       // 分页参数
       page: 1,
-      pageSizes: 20
+      pageSize: 20,
+      totalCount: 1
     }
   },
   mixins: [JnmesMixin],
   props: {
-    currentType: {
+    curType: {
       type: Number,
       default: 2,
       required: true
@@ -167,18 +170,17 @@ export default {
     // 初始化加载数据
     loadTableData (page = 1) {
       this.page = page
-      // console.log('给你一瓶魔法药水')
-      // const requestParams = {}
-      /**
-       * , {
-        type: this.currentType,
+      getData(this.url.list, {
+        type: this.curType,
         pageNo: this.page,
-        pageSize: this.pageSizes
-      }
-       */
-      // getData(this.url.list).then(res => {
-      getData('/customer/cusCustomer/list?type=3&pageNo=1&pageSize=10').then(res => {
-        console.log('给你一瓶魔法药水', res)
+        pageSize: this.pageSize
+      }).then(res => {
+        const { code, result: { records, total }, success } = res.data
+        if (code === 200 && success) {
+          this.tableData = records
+          console.log('打印数据', records)
+          this.totalCount = total
+        }
       })
     },
     // 点击分页页码
