@@ -53,14 +53,86 @@
     </div>
     <!-- /查询区域 -->
     <!-- 表格数据 -->
-    <el-table
-      stripe
+     <el-table
       :data="tableData"
       :header-cell-style="{'text-align':'center'}"
       :cell-style="{'text-align':'center'}"
       style="width: 100%">
-      <el-table-column label="序号" type="index" width="80" />
-      <el-table-column prop="companyName" label="客户名称" />
+      <el-table-column type="expand">
+        <!--  slot-scope="props" -->
+        <template slot-scope="props">
+          <!-- <el-form-item label="所属店铺">
+              <span>{{ props.row.shop }}</span>
+            </el-form-item>
+            <el-form-item label="商品 ID">
+              <span>{{ props.row.id }}</span>
+            </el-form-item>
+            <el-form-item label="店铺 ID">
+              <span>{{ props.row.shopId }}</span>
+            </el-form-item>
+            <el-form-item label="商品分类">
+              <span>{{ props.row.category }}</span>
+            </el-form-item>
+            <el-form-item label="店铺地址">
+              <span>{{ props.row.address }}</span>
+            </el-form-item>
+            <el-form-item label="商品描述">
+              <span>{{ props.row.desc }}</span>
+            </el-form-item>
+          </el-form> -->
+          <el-table
+            :data="props.row.orderVoList"
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
+            style="width: 100%">
+            <el-table-column prop="orderNo" label="订单编号" />
+            <el-table-column prop="projectName" label="项目名称" />
+            <el-table-column
+              prop="provinceName"
+              label="所属地区">
+            </el-table-column>
+            <el-table-column
+              prop="realPrice"
+              label="总价">
+            </el-table-column>
+            <el-table-column prop="deliveryDate" label="发货日期" />
+            <el-table-column prop="warrantyTime" label="回款日期" />
+            <el-table-column prop="payedMoney" label="已回款金额">
+            </el-table-column>
+            <el-table-column prop="unPayMoney" label="未回款金额">
+            </el-table-column>
+            <el-table-column prop="isPayed" label="是否结款">
+            </el-table-column>
+            <el-table-column prop="shippingPhone" label="收货电话" />
+            <el-table-column prop="status" label="状态">
+            </el-table-column>
+            <el-table-column prop="address" label="协助人员">
+            </el-table-column>
+            <!-- <el-table-column label="操作">
+            </el-table-column> -->
+            <el-table-column label="操作" width="110" class-name="operation">
+              <template slot-scope="scope">
+                <span @click="handleEdit(scope.row)">编辑</span>
+                <em>|</em>
+                <el-dropdown @command="handleDropDownMenuClick">
+                  <span class="el-dropdown-link">
+                    更多<i class="el-icon-arrow-down el-icon--right"></i>
+                  </span>
+                  <el-dropdown-menu slot="dropdown" placement="top-start">
+                    <el-dropdown-item command="a">详情</el-dropdown-item>
+                    <el-dropdown-item command="b">日志</el-dropdown-item>
+                    <el-dropdown-item command="c">成单</el-dropdown-item>
+                    <el-dropdown-item command="d">延期</el-dropdown-item>
+                    <el-dropdown-item command="e">作废</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-table-column>
+      <el-table-column label="序号" type="index" />
+      <el-table-column label="客户名称" prop="companyName" />
       <el-table-column prop="status" label="客户状态">
         <template slot-scope="scope">
           {{ scope.row.status === 1 ? '正常' : scope.row.status === 2 ? '作废' : '删除' }}
