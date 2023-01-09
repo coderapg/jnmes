@@ -6,8 +6,8 @@ import { JNMES_TOKEN } from 'utils/jsmesconst'
 export function request (config) {
   // 配置公共路径信息
   const instance = axios.create({
-    baseURL: 'https://www.jnsms.cn',
-    // baseURL: 'http://192.168.124.14:8080',
+    // baseURL: 'https://www.jnsms.cn',
+    baseURL: 'http://192.168.124.14:8080',
     timeout: 5000
   })
 
@@ -26,9 +26,11 @@ export function request (config) {
   // 添加响应拦截器
   instance.interceptors.response.use(res => {
     // 在2xx范围内的任何状态代码都会触发此函数
+    // console.log('状态码1', res)
     return res
   }, err => {
     // 任何超出2xx范围的状态代码都会触发此函数
+    // console.log('状态码1', err)
     return Promise.reject(err)
   })
   // 返回实例

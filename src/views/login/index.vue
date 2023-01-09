@@ -99,8 +99,9 @@ export default {
         const form = Object.assign({}, this.user, { checkKey: this.timeStamp })
         signIn(form).then(res => {
           this.loginLoading = false
-          const { data: { code, message, result: { departs, multi_depart: multiDepart, sysAllDictItems, tenantList, token, userInfo }, success } } = res
-          console.log('登录的相关信息===', multiDepart, sysAllDictItems, tenantList)
+          console.log('状态码', res)
+          const { data: { code, message, result, success } } = res
+          // console.log('登录的相关信息===', result.multi_depart, res.sysAllDictItems, res.tenantList)
           if (code === 200 && success) {
             this.$notify.success({
               title: '提示',
@@ -108,9 +109,9 @@ export default {
               message
             })
             // 存储到本地
-            window.localStorage.setItem(JNMES_TOKEN, JSON.stringify(token)) // touken信息
-            window.localStorage.setItem(JNMES_DEPARTS, JSON.stringify(departs)) // 所属部门信息
-            window.localStorage.setItem(JNMES_USER_INFO, JSON.stringify(userInfo)) // 登录人信息
+            window.localStorage.setItem(JNMES_TOKEN, JSON.stringify(result.token)) // touken信息
+            window.localStorage.setItem(JNMES_DEPARTS, JSON.stringify(result.departs)) // 所属部门信息
+            window.localStorage.setItem(JNMES_USER_INFO, JSON.stringify(result.userInfo)) // 登录人信息
             // 跳转
             this.$router.push('/home')
           } else {
