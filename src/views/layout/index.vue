@@ -38,10 +38,10 @@
             <i class="el-icon-document"></i>
             <span slot="title">日报管理</span>
           </el-menu-item>
-          <el-menu-item index="6">
+          <el-menu-item index="/config">
             <!-- <i class="el-icon-setting"></i> -->
             <i class="el-icon-coin"></i>
-            <span slot="title">基础设置</span>
+            <span slot="title">基础配置</span>
           </el-menu-item>
           <!-- <el-submenu index="1">
             <template slot="title">

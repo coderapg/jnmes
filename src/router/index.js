@@ -6,6 +6,7 @@ const Login = () => import('views/login/')
 const Layout = () => import('views/layout/')
 const Home = () => import('views/home/')
 const Custome = () => import('views/custome/')
+const BasicConfig = () => import('views/basicConfig/')
 const Profile = () => import('views/profile/')
 
 Vue.use(VueRouter)
@@ -29,6 +30,11 @@ const routes = [
         path: '/custome',
         name: 'custome',
         component: Custome
+      },
+      {
+        path: '/config',
+        name: 'config',
+        component: BasicConfig
       },
       {
         path: '/profile',
