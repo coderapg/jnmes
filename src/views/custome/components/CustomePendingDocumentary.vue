@@ -92,12 +92,26 @@
         label="协助人员">
       </el-table-column> -->
       <el-table-column
-        prop="address"
-        label="详细地址">
+      label="详细地址">
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <span>{{ scope.row.address }}</span>
+            <div slot="reference" class="name-wrapper">
+              <p>{{ scope.row.address }}</p>
+            </div>
+          </el-popover>
+        </template>
       </el-table-column>
       <el-table-column
-        prop="remark"
-        label="备注">
+      label="备注">
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <span>{{ scope.row.remark }}</span>
+            <div slot="reference" class="name-wrapper">
+              <p>{{ scope.row.remark }}</p>
+            </div>
+          </el-popover>
+        </template>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -151,7 +165,7 @@ export default {
       },
       // 分页参数
       page: 1,
-      pageSize: 20,
+      pageSize: 10,
       totalCount: 1
     }
   },
@@ -185,7 +199,6 @@ export default {
     },
     // 点击分页页码
     handleCurrentChange () {
-      // console.log('分页页码', this.page, this.url.list)
       this.loadTableData(this.page)
     },
     onSubmit () {

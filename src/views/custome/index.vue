@@ -44,7 +44,7 @@ export default {
         return post.indexOf('admin') !== -1 ? '2' : '3'
       },
       set () {
-        return ''
+        return null
       }
     }
   },
