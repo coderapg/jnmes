@@ -8,7 +8,9 @@
         <el-tab-pane label="跟单" name="3">
           <custome-pending-documentary :cur-type="CustomerTypeEnum.Documentary" />
         </el-tab-pane>
-        <el-tab-pane label="成单" name="1">1</el-tab-pane>
+        <el-tab-pane label="成单" name="1">
+          <custome-order :cur-type="CustomerTypeEnum.Ordered" />
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -18,7 +20,8 @@
 import { CustomerTypeEnum } from 'utils/constant'
 import { userInfoAndDepartsMixin } from 'utils/mixin'
 
-import CustomePendingDocumentary from './components/CustomePendingDocumentary.vue'
+import CustomePendingDocumentary from './components/CustomePendingDocumentary'
+import CustomeOrder from './components/CustomeOrder'
 
 export default {
   name: 'CustomeIndex',
@@ -30,7 +33,8 @@ export default {
     }
   },
   components: {
-    CustomePendingDocumentary
+    CustomePendingDocumentary,
+    CustomeOrder
   },
   computed: {
     typeIndex () {
