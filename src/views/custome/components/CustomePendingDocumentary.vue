@@ -56,72 +56,75 @@
     <el-table
       stripe
       :data="tableData"
+      :header-cell-style="{'text-align':'center'}"
+      :cell-style="{'text-align':'center'}"
       style="width: 100%">
-      <el-table-column
-        label="序号"
-        type="index"
-        width="80" />
-      <el-table-column
-        prop="companyName"
-        label="客户名称" />
-      <el-table-column
-        prop="createTime"
-        label="开始日期" />
-      <el-table-column
-        prop="endTime"
-        label="结束日期">
+      <el-table-column label="序号" type="index" width="80" />
+      <el-table-column prop="companyName" label="客户名称" />
+      <el-table-column prop="createTime" label="开始日期" />
+      <el-table-column prop="endTime" label="结束日期">
       </el-table-column>
-      <el-table-column
-        prop="status"
-        label="客户状态">
+      <el-table-column prop="status" label="客户状态">
+        <template slot-scope="scope">
+          {{ scope.row.status === 1 ? '正常' : scope.row.status === 2 ? '作废' : '删除' }}
+        </template>
       </el-table-column>
-      <el-table-column
-        prop="starLevel"
-        label="客户等级">
+      <el-table-column label="客户等级" width="140">
+        <template slot-scope="scope">
+          <el-popover trigger="hover" placement="top">
+            <span>{{ textsList[scope.row.starLevel -1] }}</span>
+            <div slot="reference" class="name-wrapper">
+              <el-rate v-model="scope.row.starLevel" disabled text-color="#ff9900" />
+            </div>
+          </el-popover>
+        </template>
       </el-table-column>
-      <el-table-column
-        prop="orderName"
-        label="主要负责人">
+      <el-table-column prop="orderName" label="主要负责人">
+        <template slot-scope="scope">
+          <el-tag size="medium">{{ scope.row.orderName }}</el-tag>
+        </template>
       </el-table-column>
-      <el-table-column
-        prop="helperNames"
-        label="协助人员">
+      <el-table-column prop="helperNames" label="协助人员">
+        <template slot-scope="scope" v-if="scope.row.helperNames">
+          <el-tag size="medium" v-for="(item, index) in helperList(scope.row.helperNames)" :key="index">{{ item }}</el-tag>
+        </template>
       </el-table-column>
-      <!-- <el-table-column
-        prop="helperIds"
-        label="协助人员">
-      </el-table-column> -->
-      <el-table-column
-      label="详细地址">
+      <el-table-column label="详细地址">
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
             <span>{{ scope.row.address }}</span>
             <div slot="reference" class="name-wrapper">
-              <p>{{ scope.row.address }}</p>
+              <p>{{ scope.row.address | sliceFilter }}</p>
             </div>
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column
-      label="备注">
+      <el-table-column label="备注">
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
             <span>{{ scope.row.remark }}</span>
             <div slot="reference" class="name-wrapper">
-              <p>{{ scope.row.remark }}</p>
+              <p>{{ scope.row.remark | sliceFilter }}</p>
             </div>
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="110" class-name="operation">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <span @click="handleEdit(scope.row)">编辑</span>
+          <em>|</em>
+          <el-dropdown @command="handleDropDownMenuClick">
+            <span class="el-dropdown-link">
+              更多<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" placement="top-start">
+              <el-dropdown-item command="a">详情</el-dropdown-item>
+              <el-dropdown-item command="b">日志</el-dropdown-item>
+              <el-dropdown-item command="c">成单</el-dropdown-item>
+              <el-dropdown-item command="d">延期</el-dropdown-item>
+              <el-dropdown-item command="e">作废</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -160,6 +163,7 @@ export default {
       ],
       value: null,
       tableData: [],
+      textsList: ['一般客户', '良好客户', '优质客户', '大客户', '超级客户'],
       url: {
         list: '/customer/cusCustomer/list'
       },
@@ -175,6 +179,11 @@ export default {
       type: Number,
       default: 2,
       required: true
+    }
+  },
+  filters: {
+    sliceFilter (val) {
+      return val && val.length > 0 ? val.slice(0, 6) + '...' : null
     }
   },
   created () {
@@ -204,11 +213,16 @@ export default {
     onSubmit () {
       console.log('submit!')
     },
-    handleEdit (index, row) {
-      console.log(index, row)
+    handleEdit (row) {
+      console.log(row)
     },
-    handleDelete (index, row) {
-      console.log(index, row)
+    // 对协助人员进行切割
+    helperList (value) {
+      return value.split(',')
+    },
+    // 下拉
+    handleDropDownMenuClick (command) {
+      console.log('下拉', command)
     }
   }
 }
@@ -216,4 +230,22 @@ export default {
 
 <style lang="less" scoped>
   .custome-pending-documentary {}
+  /deep/ .operation {
+    .cell {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      span {
+        color: #409eff;
+        i {
+          font-size: 12px;
+        }
+      }
+      em {
+        font-size: 10px;
+        font-style: normal;
+        color: #eee;
+      }
+    }
+  }
 </style>

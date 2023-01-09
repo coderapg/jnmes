@@ -6,8 +6,8 @@ import { JNMES_TOKEN, JNMES_USER_INFO } from 'utils/jsmesconst'
 export function request (config) {
   // 配置公共路径信息
   const instance = axios.create({
-    // baseURL: 'https://www.jnsms.cn/sales-management-system',
-    baseURL: 'http://192.168.124.14:8080/sales-management-system',
+    baseURL: 'https://www.jnsms.cn/sales-management-system',
+    // baseURL: 'http://192.168.124.14:8080/sales-management-system',
     timeout: 5000
   })
 
