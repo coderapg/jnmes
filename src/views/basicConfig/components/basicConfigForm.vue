@@ -4,7 +4,15 @@
       width="800px"
       :title="title"
       :visible="dialogVisible"
-      append-to-body>
+      :fullscreen="toggleChange"
+      append-to-body
+      :before-close="handleClosed">
+      <template slot="title">
+        <div class="title-content">
+          <span>{{ title }}</span>
+          <i class="iconfont" :class="toggleChange ? 'icon-shouqi' : 'icon-zhankai3'" @click="handleToggle"></i>
+        </div>
+      </template>
       <!-- 表单区域 -->
       <el-form ref="form" :model="form" label-width="80px" :disabled="disabled">
         <el-form-item label="配置编号">
@@ -29,13 +37,14 @@
 <script>
 
 export default {
-  name: 'basicConfigMode',
+  name: 'basicConfigForm',
   data () {
     return {
       title: '编辑',
       dialogVisible: false,
       disabled: false,
-      form: {}
+      form: {},
+      toggleChange: false
     }
   },
   methods: {
@@ -45,10 +54,40 @@ export default {
         this.dialogVisible = true
         this.form = Object.assign({}, row)
       })
+    },
+    // 点击x号 / esc - 关闭dialog对话框
+    handleClosed () {
+      this.dialogVisible = false
+    },
+    // 展开 / 收起
+    handleToggle () {
+      this.toggleChange = !this.toggleChange
     }
     // 查看
   }
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  /deep/ .el-dialog {
+    .el-dialog__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .title-content {
+        width: 96%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 24px;
+        .iconfont {
+          color: #909399;
+          font-size: 16px;
+        }
+      }
+      .el-dialog__headerbtn {
+        line-height: 24px;
+      }
+    }
+  }
+</style>
