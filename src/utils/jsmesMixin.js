@@ -12,6 +12,10 @@ export const JnmesMixin = {
     // 收起 / 折叠
     handleToggleSearch () {
       this.toggleSearchStatus = !this.toggleSearchStatus
+    },
+    // 编辑
+    edit (record) {
+      console.log('混入编辑', record)
     }
   }
 }

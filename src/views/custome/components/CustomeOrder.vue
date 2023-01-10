@@ -228,7 +228,6 @@ export default {
         const { code, result: { records, total }, success } = res.data
         if (code === 200 && success) {
           this.tableData = records
-          console.log('打印数据', records)
           this.totalCount = total
         }
       })
@@ -238,7 +237,6 @@ export default {
       this.loadTableData(this.page)
     },
     onSubmit () {
-      console.log('submit!')
     },
     handleEdit (row) {
       console.log(row)

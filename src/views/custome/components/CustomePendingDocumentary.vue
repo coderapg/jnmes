@@ -210,7 +210,6 @@ export default {
       this.loadTableData(this.page)
     },
     onSubmit () {
-      console.log('submit!')
     },
     // 编辑
     handleEdit (row) {

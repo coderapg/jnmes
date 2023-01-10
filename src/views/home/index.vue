@@ -55,7 +55,6 @@ export default {
   methods: {
     loadTotalSales () {
       getTotalSales().then(res => {
-        console.log('===', res)
         const { result: { avg, total }, success } = res.data
         if (success) {
           this.totalSales = total

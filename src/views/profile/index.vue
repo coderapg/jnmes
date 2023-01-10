@@ -205,7 +205,6 @@ export default {
       })
     },
     onSubmit () {
-      console.log('submit!')
     }
   }
 }

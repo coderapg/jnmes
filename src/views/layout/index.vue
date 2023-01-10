@@ -22,21 +22,21 @@
           </el-menu-item>
           <el-menu-item index="/custome">
             <i class="el-icon-user"></i>
-            <span slot="title">客户管理</span>
+            <span slot="title">{{ userInfo.userIdentity === 2 ? '客户管理' : '我的客户' }}</span>
           </el-menu-item>
           <el-menu-item index="3">
             <!-- el-icon-zoom-in -->
             <!-- el-icon-s-check -->
             <i class="el-icon-s-check"></i>
-            <span slot="title">审核管理</span>
+            <span slot="title">{{ userInfo.userIdentity === 2 ? '审核管理' : '我的申请' }}</span>
           </el-menu-item>
           <el-menu-item index="4">
             <i class="el-icon-document-copy"></i>
-            <span slot="title">日志管理</span>
+            <span slot="title">{{ userInfo.userIdentity === 2 ? '日志管理' : '我的日志' }}</span>
           </el-menu-item>
           <el-menu-item index="5">
             <i class="el-icon-document"></i>
-            <span slot="title">日报管理</span>
+            <span slot="title">{{ userInfo.userIdentity === 2 ? '日报管理' : '我的日报' }}</span>
           </el-menu-item>
           <el-menu-item index="/config">
             <!-- <i class="el-icon-setting"></i> -->
@@ -69,6 +69,7 @@
           <div class="header">
             <i :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'" @click="handleToggle" />
             <div class="user-wrap" @click="handleToProfile">个人中心</div>
+            <div class="user-wrap" @click="handleSingOut">退出</div>
           </div>
         </el-header>
         <el-main>
@@ -81,9 +82,12 @@
 </template>
 
 <script>
+import { userInfoAndDepartsMixin } from 'utils/mixin'
+import { JNMES_TOKEN } from 'utils/jsmesconst'
 
 export default {
   name: 'LayoutIndex',
+  mixins: [userInfoAndDepartsMixin],
   data () {
     return {
       isCollapse: false
@@ -97,6 +101,21 @@ export default {
     // 去往个人中心
     handleToProfile () {
       this.$router.push('/profile')
+    },
+    // 退出
+    handleSingOut () {
+      this.$confirm('确定注销登录吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '注销成功!'
+        })
+        window.localStorage.removeItem(JNMES_TOKEN) // 清除登录人token信息
+        this.$router.push('/login')
+      })
     }
   }
 }

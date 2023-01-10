@@ -10,7 +10,7 @@
             <div class="title">{{ titleName }}</div>
           </el-form-item>
           <el-form-item prop="username">
-            <el-input placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="user.username" /><!-- el-icon-s-custom -->
+            <el-input placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="user.username" />
           </el-form-item>
           <el-form-item prop="password">
             <el-input placeholder="请输入密码" prefix-icon="el-icon-lock" show-password v-model="user.password" />
@@ -43,10 +43,10 @@ export default {
   data () {
     return {
       user: {
-        // username: 'jn04',
-        // password: 'Jnzn12345!',
-        username: 'lt01',
-        password: 'Lt12345!',
+        username: 'jn04',
+        password: 'Jnzn12345!',
+        // username: 'lt01',
+        // password: 'Lt12345!',
         captcha: ''
       },
       rules: {
@@ -60,7 +60,6 @@ export default {
           { required: true, message: '请输入验证码', trigger: 'blur' }
         ]
       },
-      // logoUrl: 'http://sms.jnmes.com/img/logo.bec6bef1.svg', // logo图片地址
       titleName: '优客EMS销售管理系统',
       timeStamp: '', // 获取当前的时间戳，用于获取最新验证码和登录时验证返回的code
       randCode: null, // 后台返回的验证码图片
@@ -102,7 +101,6 @@ export default {
         signIn(form).then(res => {
           this.loginLoading = false
           const { data: { code, message, result, success } } = res
-          console.log('状态码', result)
           // console.log('登录的相关信息===', result.multi_depart, res.sysAllDictItems, res.tenantList)
           if (code === 200 && success) {
             this.$notify.success({

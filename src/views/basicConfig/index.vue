@@ -1,10 +1,6 @@
 <template>
   <div class="basic-config">
     <el-card class="box-card">
-      <!-- <div slot="header" class="clearfix">
-        <span>卡片名称</span>
-      </div> -->
-      <!-- 表格数据 -->
       <el-table
         :data="tableData"
         border
@@ -20,7 +16,7 @@
           <template slot-scope="scope">
             <span @click="handleEdit(scope.row)">编辑</span>
             <em>|</em>
-            <el-dropdown @command="handleDropDownMenuClick">
+            <el-dropdown @command="handleDropDownMenuClick($event, scope.row)">
               <span class="el-dropdown-link">
                 更多<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
@@ -44,11 +40,14 @@
         :total="totalCount" />
       <!-- /分页 -->
     </el-card>
+    <basic-config-form ref="modelForm" />
   </div>
 </template>
 
 <script>
 import { basicConfigData } from 'https/basicConfig'
+
+import basicConfigForm from './components/basicConfigForm'
 
 export default {
   name: 'basicConfigIndex',
@@ -65,6 +64,9 @@ export default {
       tableData: [],
       totalCount: 0
     }
+  },
+  components: {
+    basicConfigForm
   },
   created () {
     this.loadTableData(1)
@@ -86,11 +88,30 @@ export default {
     },
     // 编辑
     handleEdit (row) {
-      console.log(row)
+      this.$refs.modelForm.title = '编辑'
+      this.$refs.modelForm.disabled = false
+      this.$refs.modelForm.edit(row)
     },
     // 下拉
-    handleDropDownMenuClick (command) {
-      console.log('下拉', command)
+    handleDropDownMenuClick (command, row) {
+      switch (command) {
+        case 'a':
+          this.handleDetail(row)
+          break
+        case 'b':
+          this.handleDelete(row)
+          break
+      }
+    },
+    // 查看详情
+    handleDetail (row) {
+      this.$refs.modelForm.title = '详情'
+      this.$refs.modelForm.disabled = true
+      this.$refs.modelForm.edit(row)
+    },
+    // 删除
+    handleDelete (row) {
+      console.log('删除', row)
     }
   }
 }
