@@ -28,7 +28,13 @@
               </span>
               <el-dropdown-menu slot="dropdown" placement="top-start">
                 <el-dropdown-item command="a">详情</el-dropdown-item>
-                <el-dropdown-item command="b">删除</el-dropdown-item>
+                <el-dropdown-item command="b">
+                  <el-popconfirm title="确定删除吗?" @confirm="handleSureDelete(scope.row)">
+                    <template slot="reference">
+                      <a>删除</a>
+                    </template>
+                  </el-popconfirm>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -51,7 +57,7 @@
 </template>
 
 <script>
-import { basicConfigData } from 'https/basicConfig'
+import { basicConfigData, deleteConfig } from 'https/basicConfig'
 
 import basicConfigForm from './components/basicConfigForm'
 
@@ -80,6 +86,7 @@ export default {
   methods: {
     // 加载table数据
     loadTableData (page = 1) {
+      this.pageOptions.page = page
       basicConfigData(this.url.list, this.pageOptions).then(res => {
         const { result: { records, total }, success } = res.data
         if (success) {
@@ -90,7 +97,7 @@ export default {
     },
     // 点击分页页码
     handleCurrentChange () {
-      this.loadTableData(this.page)
+      this.loadTableData(this.pageOptions.page)
     },
     // 新增
     handleAdd () {
@@ -130,7 +137,21 @@ export default {
     },
     // 删除
     handleDelete (row) {
-      console.log('删除', row)
+      // console.log('删除', row)
+    },
+    // 气泡确认删除
+    handleSureDelete (row) {
+      deleteConfig({ id: row.id }).then(res => {
+        const { message, success } = res.data
+        if (success) {
+          this.$message({
+            message,
+            type: 'success'
+          })
+          // 删除完成后，还是加载当前页码的数据
+          this.loadTableData(this.pageOptions.page)
+        }
+      })
     }
   }
 }
