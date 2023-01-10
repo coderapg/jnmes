@@ -11,3 +11,17 @@ export function basicConfigData (url, params) {
     params
   })
 }
+
+// 基础配置-添加
+// export function addConfig () {
+//   return request({})
+// }
+
+// 基础配置-编辑
+export function editConfig (data) {
+  return request({
+    method: 'PUT',
+    url: '/basicConfiguration/basicConfiguration/edit',
+    data
+  })
+}

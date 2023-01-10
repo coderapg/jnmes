@@ -40,7 +40,7 @@
         :total="totalCount" />
       <!-- /分页 -->
     </el-card>
-    <basic-config-form ref="modelForm" />
+    <basic-config-form ref="modelForm" @handleEditChange="handleEditChange" />
   </div>
 </template>
 
@@ -91,6 +91,10 @@ export default {
       this.$refs.modelForm.title = '编辑'
       this.$refs.modelForm.disabled = false
       this.$refs.modelForm.edit(row)
+    },
+    // 子组件中编辑完成后发送过来的事件
+    handleEditChange () {
+      this.loadTableData(1)
     },
     // 下拉
     handleDropDownMenuClick (command, row) {

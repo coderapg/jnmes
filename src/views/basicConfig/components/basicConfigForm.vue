@@ -28,13 +28,14 @@
       <!-- /表单区域 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+        <el-button type="primary" @click="submitForm">确定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { editConfig } from 'https/basicConfig'
 
 export default {
   name: 'basicConfigForm',
@@ -44,7 +45,11 @@ export default {
       dialogVisible: false,
       disabled: false,
       form: {},
-      toggleChange: false
+      toggleChange: false,
+      url: {
+        add: '/report/businessReport/add',
+        edit: '/basicConfiguration/basicConfiguration/edit'
+      }
     }
   },
   methods: {
@@ -62,6 +67,32 @@ export default {
     // 展开 / 收起
     handleToggle () {
       this.toggleChange = !this.toggleChange
+    },
+    // 提交
+    submitForm () {
+      if (this.form.id) {
+        // 编辑
+        editConfig(this.form).then(res => {
+          const { message, success } = res.data
+          if (success) {
+            this.$message({
+              message,
+              type: 'success'
+            })
+            this.dialogVisible = false
+            // 子组件调用父组件中的方法
+            // this.$parent.loadTableData(1)
+            this.$emit('handleEditChange')
+          } else {
+            this.$message({
+              message,
+              type: 'error'
+            })
+          }
+        })
+      } else {
+        // 新增
+      }
     }
     // 查看
   }
