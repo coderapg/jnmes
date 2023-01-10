@@ -13,21 +13,21 @@
         </div>
       </template>
       <!-- 表单区域 -->
-      <el-form ref="ruleForm" :model="form" :rules="rules" label-width="80px" :disabled="disabled">
+      <el-form ref="ruleForm" :model="form" :rules="rules" label-width="80px" :disabled="formDisabled">
         <el-form-item label="配置编号" prop="code">
-          <el-input v-model="form.code" disabled />
+          <el-input v-model="form.code" :disabled="itemDisabled" />
         </el-form-item>
         <el-form-item label="配置值" prop="value">
           <el-input v-model="form.value" />
         </el-form-item>
         <el-form-item label="配置说明" prop="note">
-          <el-input type="textarea" v-model="form.note" disabled />
+          <el-input type="textarea" v-model="form.note" :disabled="itemDisabled" />
         </el-form-item>
       </el-form>
       <!-- /表单区域 -->
       <span slot="footer" class="dialog-footer">
-        <el-button :disabled="disabled" @click="dialogVisible = false">取消</el-button>
-        <el-button :disabled="disabled" type="primary" @click="submitForm">确定</el-button>
+        <el-button :disabled="formDisabled && itemDisabled" @click="dialogVisible = false">取消</el-button>
+        <el-button :disabled="formDisabled && itemDisabled" type="primary" @click="submitForm">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -42,7 +42,8 @@ export default {
     return {
       title: '编辑',
       dialogVisible: false,
-      disabled: false,
+      formDisabled: false,
+      itemDisabled: false,
       form: {},
       rules: {
         code: [
@@ -63,6 +64,12 @@ export default {
     }
   },
   methods: {
+    // 新增
+    add () {
+      this.dialogVisible = true
+      this.formDisabled = false
+      this.itemDisabled = false
+    },
     // 编辑
     edit (row) {
       this.$nextTick(() => {
@@ -73,6 +80,7 @@ export default {
     // 点击x号 / esc - 关闭dialog对话框
     handleClosed () {
       this.dialogVisible = false
+      this.form = {}
     },
     // 展开 / 收起
     handleToggle () {

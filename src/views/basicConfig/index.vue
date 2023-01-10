@@ -1,6 +1,12 @@
 <template>
   <div class="basic-config">
     <el-card class="box-card">
+      <!-- 操作区域 -->
+      <div class="table-operator">
+        <el-button type="primary" icon="el-icon-plus" size="small" @click="handleAdd">新增</el-button>
+      </div>
+      <!-- /操作区域 -->
+      <!-- 表格数据 -->
       <el-table
         :data="tableData"
         border
@@ -28,7 +34,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- 表格数据 -->
+      <!-- /表格数据 -->
       <!-- 分页 -->
       <el-pagination
         class="pagination"
@@ -86,10 +92,18 @@ export default {
     handleCurrentChange () {
       this.loadTableData(this.page)
     },
+    // 新增
+    handleAdd () {
+      this.$refs.modelForm.title = '新增'
+      this.$refs.modelForm.formDisabled = false
+      this.$refs.modelForm.itemDisabled = false
+      this.$refs.modelForm.add()
+    },
     // 编辑
     handleEdit (row) {
       this.$refs.modelForm.title = '编辑'
-      this.$refs.modelForm.disabled = false
+      this.$refs.modelForm.formDisabled = false
+      this.$refs.modelForm.itemDisabled = true
       this.$refs.modelForm.edit(row)
     },
     // 子组件中编辑完成后发送过来的事件
@@ -110,7 +124,8 @@ export default {
     // 查看详情
     handleDetail (row) {
       this.$refs.modelForm.title = '详情'
-      this.$refs.modelForm.disabled = true
+      this.$refs.modelForm.formDisabled = true
+      this.$refs.modelForm.itemDisabled = true
       this.$refs.modelForm.edit(row)
     },
     // 删除
@@ -121,4 +136,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .table-operator {
+    margin: 20px 0;
+  }
+</style>
